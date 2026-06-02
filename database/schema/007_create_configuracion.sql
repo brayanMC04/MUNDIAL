@@ -1,0 +1,9 @@
+USE mundial2026;
+
+CREATE TABLE configuracion(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    clave VARCHAR(100) UNIQUE NOT NULL,
+
+    valor VARCHAR(255) NOT NULL
+);
