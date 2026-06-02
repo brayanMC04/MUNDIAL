@@ -1,3 +1,5 @@
+USE mundial2026;
+
 INSERT INTO configuracion(clave, valor)
 VALUES
 ('puntos_marcador_exacto', '5'),
