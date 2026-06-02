@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+
+# React
+node_modules/
+dist/
+
+# Variables
+.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
