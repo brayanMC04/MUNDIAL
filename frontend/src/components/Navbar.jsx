@@ -97,11 +97,19 @@ function Navbar() {
                         >
                             Pronósticos
                         </NavLink>
+
+                        {/* Mobile CTA: visible inside collapse on small screens */}
+                        <NavLink
+                            className={({ isActive }) => isActive ? "nav-link d-lg-none" : "nav-link d-lg-none"}
+                            to="/campeon"
+                        >
+                            <span className="btn btn-warning btn-sm w-100 text-dark">Escoger mi campeón</span>
+                        </NavLink>
                     </div>
 
                     <div className="d-flex align-items-center gap-2">
                         <NavLink
-                            className="btn btn-outline-warning btn-sm d-none d-lg-inline-flex"
+                            className="btn btn-warning btn-sm d-none d-lg-inline-flex"
                             to="/campeon"
                         >
                             Escoger mi campeón
