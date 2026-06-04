@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { obtenerRanking } from "../services/rankingService";
 import { obtenerPartidos } from "../services/partidoService";
+import { obtenerCampeonUsuario } from "../services/campeonService";
 
 function Dashboard() {
 
     const [ranking, setRanking] = useState([]);
     const [partidosAbiertos, setPartidosAbiertos] = useState([]);
+    const [campeon, setCampeon] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const usuario = JSON.parse(localStorage.getItem("usuario")) || {};
+    const usuarioId = Number(usuario.id);
 
     useEffect(() => {
         cargarContenido();
@@ -19,12 +22,14 @@ function Dashboard() {
 
     const cargarContenido = async () => {
         try {
-            const [rankingData, partidosData] = await Promise.all([
+            const [rankingData, partidosData, campeonData] = await Promise.all([
                 obtenerRanking(),
-                obtenerPartidos()
+                obtenerPartidos(),
+                usuarioId ? obtenerCampeonUsuario(usuarioId) : Promise.resolve(null)
             ]);
 
             setRanking(rankingData || []);
+            setCampeon(campeonData || null);
 
             const abiertos = (partidosData || []).filter((partido) => {
                 return (
@@ -42,7 +47,7 @@ function Dashboard() {
         }
     };
 
-    const usuarioRanking = ranking.find((item) => item.id === usuario.id) || {};
+    const usuarioRanking = ranking.find((item) => Number(item.id) === usuarioId) || {};
     const posicion = ranking.findIndex((item) => item.id === usuario.id) + 1;
 
     return (
@@ -105,6 +110,28 @@ function Dashboard() {
                                 <h6 className="text-uppercase text-muted">Rol</h6>
                                 <h2>{usuario.rol || "Usuario"}</h2>
                                 <p className="mb-0 text-muted">acceso actual</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row mb-4">
+                    <div className="col">
+                        <div className="card shadow-sm">
+                            <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                <div>
+                                    <h6 className="text-uppercase text-muted">Mi campeón</h6>
+                                    <h4>{campeon ? campeon.nombre : "Aún no has elegido un campeón"}</h4>
+                                    <p className="mb-0 text-muted">
+                                        {campeon
+                                            ? "Tu selección actual para el mundial"
+                                            : "Selecciona tu campeón antes de que comience el torneo"}
+                                    </p>
+                                </div>
+
+                                <Link className="btn btn-outline-primary mt-3 mt-md-0" to="/campeon">
+                                    {campeon ? "Cambiar campeón" : "Seleccionar campeón"}
+                                </Link>
                             </div>
                         </div>
                     </div>
