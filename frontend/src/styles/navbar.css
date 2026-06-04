@@ -1,0 +1,209 @@
+.mundial-navbar{
+
+    background:
+        rgba(7,17,31,.75) !important;
+
+    backdrop-filter:
+        blur(12px);
+
+    border-bottom:
+        2px solid rgba(
+            255,
+            215,
+            0,
+            .4
+        );
+
+    box-shadow:
+        0 10px 30px rgba(
+            0,
+            0,
+            0,
+            .4
+        );
+}
+
+.mundial-logo{
+
+    animation:
+        brilloTrophy 3s infinite;
+
+    font-size:1.4rem;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    color:#FFD700 !important;
+
+    text-shadow:
+        0 0 10px rgba(
+            255,
+            215,
+            0,
+            .5
+        );
+}
+
+.nav-link{
+
+    position:relative;
+
+    color:white !important;
+
+    font-weight:600;
+
+    margin:0 5px;
+
+    padding:8px 14px !important;
+
+    border-radius:10px;
+
+    transition:.3s;
+}
+
+.nav-link:hover{
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,174,239,.2),
+            rgba(0,200,83,.2)
+        );
+
+    box-shadow:
+        0 0 15px rgba(
+            0,
+            174,
+            239,
+            .3
+        );
+
+    transform:
+        translateY(-2px);
+}
+
+.nav-link.active{
+
+    background:
+        linear-gradient(
+            90deg,
+            #00AEEF,
+            #00C853
+        );
+
+    color:white !important;
+
+    box-shadow:
+        0 0 15px rgba(
+            0,
+            174,
+            239,
+            .5
+        );
+}
+
+.nav-link.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:-6px;
+    left:10%;
+
+    width:80%;
+    height:3px;
+
+    background:#FFD700;
+
+    border-radius:20px;
+}
+
+.btn-warning{
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFD700,
+            #ffb300,
+            #FFD700
+        ) !important;
+
+    background-size:
+        300% 300%;
+
+    animation:
+        campeonGlow 4s infinite;
+
+    color:#07111f !important;
+}
+
+.btn-warning:hover{
+
+    transform:scale(1.05);
+}
+
+.btn-danger{
+
+    background:
+        linear-gradient(
+            90deg,
+            #E63946,
+            #c1121f
+        ) !important;
+
+    border:none !important;
+
+    font-weight:700;
+}
+
+.btn-danger:hover{
+
+    transform:scale(1.05);
+}
+
+.navbar-toggler{
+
+    border-color:
+        rgba(
+            255,
+            215,
+            0,
+            .5
+        ) !important;
+}
+
+@keyframes brilloTrophy{
+
+    0%{
+        text-shadow:
+            0 0 5px #FFD700;
+    }
+
+    50%{
+        text-shadow:
+            0 0 25px #FFD700,
+            0 0 45px #FFD700;
+    }
+
+    100%{
+        text-shadow:
+            0 0 5px #FFD700;
+    }
+}
+
+@keyframes campeonGlow{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+}

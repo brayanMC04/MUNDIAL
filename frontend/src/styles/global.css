@@ -1,0 +1,314 @@
+:root{
+
+    --worldcup-blue:#00AEEF;
+    --worldcup-red:#E63946;
+    --worldcup-green:#00C853;
+    --worldcup-gold:#FFD700;
+
+    --bg-dark:#07111f;
+    --bg-card:#12233d;
+
+    --text:#ffffff;
+    --text-muted:#b8c3d9;
+}
+
+body{
+
+    margin:0;
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0,174,239,.25),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(0,200,83,.20),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #07111f,
+            #0b1830,
+            #102447
+        );
+
+    color:var(--text);
+
+    font-family:
+        "Segoe UI",
+        sans-serif;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+a{
+    text-decoration:none;
+}
+
+.container{
+    position:relative;
+    z-index:2;
+}
+
+.card{
+
+    background:
+        rgba(18,35,61,.85) !important;
+
+    border:
+        1px solid rgba(
+            255,
+            215,
+            0,
+            .20
+        ) !important;
+
+    border-radius:20px !important;
+
+    backdrop-filter:blur(10px);
+
+    color:white;
+
+    overflow:hidden;
+
+    transition:.3s;
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+        0 0 30px rgba(
+            255,
+            215,
+            0,
+            .20
+        );
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--worldcup-blue),
+            var(--worldcup-green),
+            var(--worldcup-red)
+        );
+}
+
+.btn-primary{
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--worldcup-blue),
+            var(--worldcup-green)
+        ) !important;
+
+    border:none !important;
+
+    font-weight:700;
+}
+
+.btn-primary:hover{
+
+    transform:scale(1.03);
+}
+
+h1{
+
+    font-weight:900;
+
+    color:white;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+}
+
+h2{
+
+    color:var(--worldcup-gold);
+
+    font-weight:800;
+}
+
+h3,h4,h5{
+
+    color:white;
+}
+
+.text-muted{
+
+    color:var(--text-muted) !important;
+}
+
+/* ===== EFECTO DE BRILLO GENERAL ===== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255,215,0,.08),
+            transparent 20%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(0,174,239,.08),
+            transparent 20%
+        );
+
+    z-index:0;
+}
+
+/* ===== TITULOS MUNDIALISTAS ===== */
+
+.worldcup-title{
+
+    font-size:3rem;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+
+    color:var(--worldcup-gold);
+
+    text-shadow:
+        0 0 10px rgba(255,215,0,.6),
+        0 0 25px rgba(255,215,0,.4);
+}
+
+/* ===== SUBTITULO ===== */
+
+.worldcup-subtitle{
+
+    color:#dbe5ff;
+
+    font-size:1.1rem;
+
+    opacity:.9;
+}
+
+.hero-worldcup{
+
+    position:relative;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,174,239,.15),
+            rgba(0,200,83,.10),
+            rgba(230,57,70,.15)
+        );
+
+    border:
+        1px solid rgba(
+            255,
+            215,
+            0,
+            .25
+        );
+
+    box-shadow:
+        0 0 40px rgba(
+            255,
+            215,
+            0,
+            .12
+        );
+}
+
+.hero-worldcup::before{
+
+    content:"⚽";
+
+    position:absolute;
+
+    right:40px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:8rem;
+
+    opacity:.08;
+}
+
+.stat-title{
+
+    color:var(--worldcup-gold);
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    margin-bottom:10px;
+}
+
+.card h2{
+
+    font-size:2.8rem;
+
+    font-weight:900;
+
+    color:white;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,.2),
+        0 0 20px rgba(255,215,0,.2);
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    background-image:
+        url("https://www.transparenttextures.com/patterns/hexellence.png");
+
+    opacity:.08;
+
+    pointer-events:none;
+
+    z-index:0;
+}

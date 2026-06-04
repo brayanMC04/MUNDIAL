@@ -1,9 +1,9 @@
 from flask import Blueprint
-
 from controllers.partido_controller import (
     listar_partidos,
     crear_partido,
-    finalizar_partido
+    finalizar_partido,
+    eliminar_partido  # 👈 Importamos la nueva función
 )
 
 partido_bp = Blueprint(
@@ -28,3 +28,10 @@ partido_bp.route(
     methods=["PUT"],
     strict_slashes=False
 )(finalizar_partido)
+
+# 🆕 NUEVA RUTA: Mapea la petición DELETE enviada desde tu frontend
+partido_bp.route(
+    "/<int:partido_id>",
+    methods=["DELETE"],
+    strict_slashes=False
+)(eliminar_partido)

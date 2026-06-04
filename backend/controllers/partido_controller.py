@@ -1,47 +1,33 @@
 from flask import request, jsonify
 from config.database import get_connection
 
-
 def listar_partidos():
-
     connection = get_connection()
-
     try:
-
         with connection.cursor() as cursor:
-
             cursor.execute("""
                 SELECT
                     p.*,
                     el.nombre AS equipo_local,
                     ev.nombre AS equipo_visitante
                 FROM partidos p
-
                 INNER JOIN equipos el
                     ON p.equipo_local_id = el.id
-
                 INNER JOIN equipos ev
                     ON p.equipo_visitante_id = ev.id
-
                 ORDER BY p.fecha_partido
             """)
-
             partidos = cursor.fetchall()
-
             return jsonify(partidos), 200
-
     except Exception as e:
-
         return jsonify({
             "success": False,
             "message": str(e)
         }), 500
-
     finally:
         connection.close()
 
 def crear_partido():
-
     data = request.get_json()
 
     equipo_local_id = data.get("equipo_local_id")
@@ -51,11 +37,8 @@ def crear_partido():
     fase = data.get("fase")
 
     connection = get_connection()
-
     try:
-
         with connection.cursor() as cursor:
-
             cursor.execute("""
                 INSERT INTO partidos
                 (
@@ -82,24 +65,18 @@ def crear_partido():
                 fecha_partido,
                 fecha_cierre
             ))
-
         connection.commit()
-
         return jsonify({
             "success": True,
             "message": "Partido creado"
         }), 201
-
     except Exception as e:
-
         return jsonify({
             "success": False,
             "message": str(e)
         }), 500
-
     finally:
         connection.close()
-
 
 def calcular_puntos(pred_local, pred_visitante, goles_local, goles_visitante):
     if pred_local == goles_local and pred_visitante == goles_visitante:
@@ -110,19 +87,17 @@ def calcular_puntos(pred_local, pred_visitante, goles_local, goles_visitante):
 
     return 1 if resultado_pred == resultado_real else 0
 
-
 def finalizar_partido(partido_id):
     data = request.get_json()
 
     goles_local = data.get("goles_local")
     goles_visitante = data.get("goles_visitante")
+    # Ahora lee el estado del JSON enviado. Si no se envía, por defecto será 'finalizado'
+    estado = data.get("estado", "finalizado")
 
     connection = get_connection()
-
     try:
-
         with connection.cursor() as cursor:
-
             cursor.execute("""
                 SELECT id
                 FROM partidos
@@ -137,16 +112,18 @@ def finalizar_partido(partido_id):
                     "message": "Partido no encontrado"
                 }), 404
 
+            # Se actualiza el estado dinámicamente reemplazando el valor fijo anterior
             cursor.execute("""
                 UPDATE partidos
                 SET goles_local = %s,
                     goles_visitante = %s,
-                    estado = 'finalizado',
+                    estado = %s,
                     ultima_actualizacion = NOW()
                 WHERE id = %s
             """, (
                 goles_local,
                 goles_visitante,
+                estado,
                 partido_id
             ))
 
@@ -177,20 +154,47 @@ def finalizar_partido(partido_id):
                 ))
 
         connection.commit()
-
         return jsonify({
             "success": True,
-            "message": "Partido finalizado y pronósticos calificados",
+            "message": f"Partido actualizado con estado '{estado}'",
             "partido_id": partido_id,
             "pronosticos_calificados": len(pronosticos)
         }), 200
-
     except Exception as e:
-
         return jsonify({
             "success": False,
             "message": str(e)
         }), 500
+    finally:
+        connection.close()
 
+def eliminar_partido(partido_id):
+    connection = get_connection()
+    try:
+        with connection.cursor() as cursor:
+            # 1. Verificar si el partido existe
+            cursor.execute("SELECT id FROM partidos WHERE id = %s", (partido_id,))
+            if not cursor.fetchone():
+                return jsonify({
+                    "success": False,
+                    "message": "Partido no encontrado"
+                }), 404
+
+            # 2. Eliminar pronósticos asociados primero para evitar errores de Foreign Key (Llave foránea)
+            cursor.execute("DELETE FROM pronosticos WHERE partido_id = %s", (partido_id,))
+
+            # 3. Eliminar el partido de la tabla principal
+            cursor.execute("DELETE FROM partidos WHERE id = %s", (partido_id,))
+            
+        connection.commit()
+        return jsonify({
+            "success": True,
+            "message": "Partido y sus pronósticos eliminados exitosamente"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"No se pudo eliminar el partido: {str(e)}"
+        }), 500
     finally:
         connection.close()

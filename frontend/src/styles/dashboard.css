@@ -1,0 +1,278 @@
+.hero-worldcup{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,174,239,.15),
+            rgba(0,200,83,.15),
+            rgba(230,57,70,.15)
+        );
+
+    border:1px solid rgba(255,215,0,.25);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 0 35px rgba(
+            255,
+            215,
+            0,
+            .15
+        );
+}
+
+.hero-worldcup::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-80px;
+    right:-80px;
+
+    width:250px;
+    height:250px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,215,0,.15),
+            transparent
+        );
+}
+
+.worldcup-title{
+
+    font-size:3rem;
+
+    font-weight:900;
+
+    color:#FFD700;
+
+    text-shadow:
+        0 0 20px rgba(
+            255,
+            215,
+            0,
+            .4
+        );
+
+    margin-bottom:10px;
+}
+
+.worldcup-subtitle{
+
+    font-size:1.1rem;
+
+    color:#d9e5ff;
+
+    letter-spacing:1px;
+}
+
+.stat-title{
+
+    color:#FFD700;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+.card-body h2{
+
+    font-size:2.5rem;
+
+    font-weight:900;
+}
+
+.list-group-item{
+
+    background:
+        rgba(255,255,255,.04) !important;
+
+    border:
+        1px solid rgba(
+            255,
+            255,
+            255,
+            .08
+        ) !important;
+
+    color:white !important;
+
+    margin-bottom:8px;
+
+    border-radius:12px !important;
+
+    transition:.3s;
+}
+
+.list-group-item:hover{
+
+    transform:translateX(5px);
+
+    border-color:#FFD700 !important;
+}
+
+.table{
+
+    color:white !important;
+}
+
+.table thead{
+
+    color:#FFD700;
+}
+
+.table-primary{
+
+    background:
+        rgba(
+            0,
+            174,
+            239,
+            .25
+        ) !important;
+}
+
+.badge{
+
+    font-size:.8rem;
+}
+
+.card-title{
+
+    color:#FFD700;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+}
+
+.dashboard-card{
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.dashboard-card::after{
+
+    content:"⚽";
+
+    position:absolute;
+
+    right:15px;
+    bottom:5px;
+
+    font-size:3rem;
+
+    opacity:.07;
+}
+
+@keyframes pulseGold{
+
+    0%{
+        box-shadow:0 0 0 rgba(255,215,0,0);
+    }
+
+    50%{
+        box-shadow:0 0 25px rgba(255,215,0,.3);
+    }
+
+    100%{
+        box-shadow:0 0 0 rgba(255,215,0,0);
+    }
+}
+
+.hero-worldcup{
+
+    animation:
+        pulseGold 4s infinite;
+}
+
+.ranking-top5{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.top-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    transition:.3s;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+}
+
+.top-card:hover{
+
+    transform:translateX(5px);
+}
+
+.top-posicion{
+
+    font-size:2rem;
+}
+
+.top-info h5{
+
+    margin:0;
+
+    color:white;
+
+    font-weight:700;
+}
+
+.top-info span{
+
+    color:#FFD700;
+
+    font-weight:700;
+}
+
+.top-1{
+
+    border-left:
+        5px solid gold;
+}
+
+.top-2{
+
+    border-left:
+        5px solid silver;
+}
+
+.top-3{
+
+    border-left:
+        5px solid #cd7f32;
+}

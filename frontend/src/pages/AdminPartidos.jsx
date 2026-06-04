@@ -3,15 +3,16 @@ import Navbar from "../components/Navbar";
 import {
     obtenerPartidos,
     crearPartido,
-    actualizarResultadoPartido
+    actualizarResultadoPartido,
+    eliminarPartidoBackend
 } from "../services/partidoService";
 import { obtenerEquipos } from "../services/equipoService";
 
 function AdminPartidos() {
-
     const [equipos, setEquipos] = useState([]);
     const [partidos, setPartidos] = useState([]);
     const [resultados, setResultados] = useState({});
+    const [partidosEnEdicion, setPartidosEnEdicion] = useState({}); 
     const [formError, setFormError] = useState("");
     const [formSuccess, setFormSuccess] = useState("");
     const [nuevoPartido, setNuevoPartido] = useState({
@@ -57,22 +58,59 @@ function AdminPartidos() {
 
     const finalizarPartido = async (partido) => {
         try {
+            const estaEditando = partidosEnEdicion[partido.id];
+            
+            // Si el admin editó valores, los tomamos; si no, dejamos los que ya venían del partido.
+            // 🔥 Agregamos por defecto que si le da a "Cerrar partido" el estado pase a "finalizado",
+            // y si está editando y selecciona otra cosa del select, se respete.
             const resultado = resultados[partido.id] || {
                 goles_local: partido.goles_local ?? 0,
-                goles_visitante: partido.goles_visitante ?? 0
+                goles_visitante: partido.goles_visitante ?? 0,
+                estado: estaEditando ? partido.estado : "finalizado"
             };
+
+            // Aseguramos que si no cambió el select del estado explícitamente en la edición, use un valor coherente
+            const nuevoEstado = resultado.estado || (estaEditando ? "pendiente" : "finalizado");
 
             await actualizarResultadoPartido(partido.id, {
                 goles_local: Number(resultado.goles_local),
-                goles_visitante: Number(resultado.goles_visitante)
+                goles_visitante: Number(resultado.goles_visitante),
+                estado: nuevoEstado // 🔥 Enviamos el nuevo estado dinámico al backend
             });
 
-            alert("Partido finalizado y pronósticos calificados.");
+            alert("Partido actualizado correctamente.");
+            
+            setPartidosEnEdicion({
+                ...partidosEnEdicion,
+                [partido.id]: false
+            });
+
             cargarPartidos();
         } catch (error) {
             console.error(error);
-            alert("Error al finalizar el partido.");
+            alert("Error al guardar el resultado del partido.");
         }
+    };
+
+    const manejarEliminarPartido = async (partidoId) => {
+        const confirmar = window.confirm(`¿Estás seguro de que deseas eliminar el partido con ID ${partidoId}? Esta acción no se puede deshacer.`);
+        if (!confirmar) return;
+
+        try {
+            await eliminarPartidoBackend(partidoId);
+            alert("Partido eliminado correctamente.");
+            cargarPartidos();
+        } catch (error) {
+            console.error(error);
+            alert("Error al intentar eliminar el partido. Asegúrate de que el backend soporte la ruta DELETE.");
+        }
+    };
+
+    const activarModoEdicion = (partidoId) => {
+        setPartidosEnEdicion({
+            ...partidosEnEdicion,
+            [partidoId]: true
+        });
     };
 
     const manejarCambioNuevoPartido = (campo, valor) => {
@@ -131,13 +169,12 @@ function AdminPartidos() {
             <Navbar />
 
             <div className="container mt-4">
-
                 <h2>Administración de Partidos</h2>
 
+                {/* Formulario de creación */}
                 <div className="card mb-4">
                     <div className="card-body">
                         <h5 className="card-title">Crear nuevo partido</h5>
-
                         <div className="row g-3">
                             {(formError || formSuccess) && (
                                 <div className="col-12">
@@ -159,12 +196,7 @@ function AdminPartidos() {
                                     type="text"
                                     className="form-control"
                                     value={nuevoPartido.fase}
-                                    onChange={(e) =>
-                                        manejarCambioNuevoPartido(
-                                            "fase",
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => manejarCambioNuevoPartido("fase", e.target.value)}
                                 />
                             </div>
 
@@ -173,12 +205,7 @@ function AdminPartidos() {
                                 <select
                                     className="form-select"
                                     value={nuevoPartido.equipo_local_id}
-                                    onChange={(e) =>
-                                        manejarCambioNuevoPartido(
-                                            "equipo_local_id",
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => manejarCambioNuevoPartido("equipo_local_id", e.target.value)}
                                 >
                                     <option value="">Seleccione</option>
                                     {equipos.map((equipo) => (
@@ -194,12 +221,7 @@ function AdminPartidos() {
                                 <select
                                     className="form-select"
                                     value={nuevoPartido.equipo_visitante_id}
-                                    onChange={(e) =>
-                                        manejarCambioNuevoPartido(
-                                            "equipo_visitante_id",
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => manejarCambioNuevoPartido("equipo_visitante_id", e.target.value)}
                                 >
                                     <option value="">Seleccione</option>
                                     {equipos.map((equipo) => (
@@ -216,12 +238,7 @@ function AdminPartidos() {
                                     type="datetime-local"
                                     className="form-control"
                                     value={nuevoPartido.fecha_partido}
-                                    onChange={(e) =>
-                                        manejarCambioNuevoPartido(
-                                            "fecha_partido",
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => manejarCambioNuevoPartido("fecha_partido", e.target.value)}
                                 />
                             </div>
 
@@ -231,20 +248,12 @@ function AdminPartidos() {
                                     type="datetime-local"
                                     className="form-control"
                                     value={nuevoPartido.fecha_cierre}
-                                    onChange={(e) =>
-                                        manejarCambioNuevoPartido(
-                                            "fecha_cierre",
-                                            e.target.value
-                                        )
-                                    }
+                                    onChange={(e) => manejarCambioNuevoPartido("fecha_cierre", e.target.value)}
                                 />
                             </div>
 
                             <div className="col-md-3 align-self-end">
-                                <button
-                                    className="btn btn-success mt-2"
-                                    onClick={crearNuevoPartido}
-                                >
+                                <button className="btn btn-success mt-2" onClick={crearNuevoPartido}>
                                     Crear partido
                                 </button>
                             </div>
@@ -252,8 +261,8 @@ function AdminPartidos() {
                     </div>
                 </div>
 
-                <table className="table table-bordered">
-
+                {/* Tabla de partidos */}
+                <table className="table table-bordered align-middle">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -263,77 +272,97 @@ function AdminPartidos() {
                             <th>Estado</th>
                             <th>Goles local</th>
                             <th>Goles visitante</th>
-                            <th>Acción</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
+                        {partidos.map((partido) => {
+                            const esFinalizado = partido.estado === "finalizado";
+                            const estaEditando = partidosEnEdicion[partido.id]; 
+                            const inputsBloqueados = esFinalizado && !estaEditando;
 
-                        {
-                            partidos.map((partido) => {
-                                const esFinalizado = partido.estado === "finalizado";
-                                const resultado = resultados[partido.id] || {
-                                    goles_local: partido.goles_local ?? "",
-                                    goles_visitante: partido.goles_visitante ?? ""
-                                };
+                            const resultado = resultados[partido.id] || {
+                                goles_local: partido.goles_local ?? "",
+                                goles_visitante: partido.goles_visitante ?? "",
+                                estado: partido.estado ?? "pendiente" // 🔥 Mantenemos el estado actual
+                            };
 
-                                return (
-                                    <tr key={partido.id}>
-                                        <td>{partido.id}</td>
-                                        <td>{partido.equipo_local}</td>
-                                        <td>{partido.equipo_visitante}</td>
-                                        <td>{partido.fecha_partido}</td>
-                                        <td>{partido.estado}</td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control"
-                                                min="0"
-                                                value={resultado.goles_local}
-                                                disabled={esFinalizado}
-                                                onChange={(e) =>
-                                                    actualizarResultado(
-                                                        partido.id,
-                                                        "goles_local",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                className="form-control"
-                                                min="0"
-                                                value={resultado.goles_visitante}
-                                                disabled={esFinalizado}
-                                                onChange={(e) =>
-                                                    actualizarResultado(
-                                                        partido.id,
-                                                        "goles_visitante",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </td>
-                                        <td>
-                                            <button
-                                                className="btn btn-primary"
-                                                disabled={esFinalizado}
-                                                onClick={() => finalizarPartido(partido)}
+                            return (
+                                <tr key={partido.id}>
+                                    <td>{partido.id}</td>
+                                    <td>{partido.equipo_local}</td>
+                                    <td>{partido.equipo_visitante}</td>
+                                    <td>{partido.fecha_partido}</td>
+                                    
+                                    {/* 🔥 ESTADO INTERACTIVO: Si está editando, deja cambiar el estado */}
+                                    <td>
+                                        {!inputsBloqueados ? (
+                                            <select
+                                                className="form-select form-select-sm"
+                                                value={resultado.estado}
+                                                onChange={(e) => actualizarResultado(partido.id, "estado", e.target.value)}
                                             >
-                                                {esFinalizado ? "Finalizado" : "Cerrar partido"}
+                                                <option value="pendiente">pendiente</option>
+                                                <option value="finalizado">finalizado</option>
+                                            </select>
+                                        ) : (
+                                            <span className={`badge ${esFinalizado ? "bg-secondary" : "bg-success"}`}>
+                                                {partido.estado}
+                                            </span>
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            min="0"
+                                            value={resultado.goles_local}
+                                            disabled={inputsBloqueados}
+                                            onChange={(e) => actualizarResultado(partido.id, "goles_local", e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            min="0"
+                                            value={resultado.goles_visitante}
+                                            disabled={inputsBloqueados}
+                                            onChange={(e) => actualizarResultado(partido.id, "goles_visitante", e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <div className="d-flex gap-2">
+                                            {inputsBloqueados ? (
+                                                <button
+                                                    className="btn btn-warning btn-sm"
+                                                    onClick={() => activarModoEdicion(partido.id)}
+                                                >
+                                                    Corregir
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="btn btn-primary btn-sm"
+                                                    onClick={() => finalizarPartido(partido)}
+                                                >
+                                                    {estaEditando ? "Guardar Corrección" : "Cerrar partido"}
+                                                </button>
+                                            )}
+
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => manejarEliminarPartido(partido.id)}
+                                            >
+                                                Eliminar
                                             </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        }
-
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
-
                 </table>
-
             </div>
         </>
     );

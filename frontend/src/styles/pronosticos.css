@@ -1,0 +1,169 @@
+.pronosticos-header{
+
+    text-align:center;
+
+    margin-bottom:40px;
+}
+
+.pronosticos-title{
+
+    color:#FFD700;
+
+    font-size:3rem;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    text-shadow:
+        0 0 20px rgba(
+            255,
+            215,
+            0,
+            .4
+        );
+}
+
+.pronosticos-subtitle{
+
+    color:#c8d7ef;
+}
+
+.partido-card{
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.partido-header{
+
+    text-align:center;
+
+    margin-bottom:20px;
+}
+
+.partido-header h3{
+
+    font-size:2rem;
+
+    font-weight:800;
+}
+
+.vs-text{
+
+    color:#FFD700;
+
+    margin:0 20px;
+}
+
+.partido-info{
+
+    text-align:center;
+
+    color:#c8d7ef;
+
+    margin-bottom:10px;
+}
+
+.partido-tiempo{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+    font-weight:700;
+}
+
+.partido-tiempo span{
+
+    color:#FFD700;
+}
+
+.partido-card input{
+
+    text-align:center;
+
+    font-size:1.4rem;
+
+    font-weight:800;
+
+    border-radius:15px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    color:white;
+}
+
+.partido-card .btn-success{
+
+    width:100%;
+
+    font-weight:800;
+
+    border:none;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00C853,
+            #00AEEF
+        );
+}
+
+.partido-card .btn-success:hover{
+
+    transform:scale(1.03);
+}
+
+.equipo-nombre{
+
+    color:#FFD700;
+
+    font-weight:800;
+
+    margin-bottom:12px;
+
+    text-transform:uppercase;
+}
+
+.marcador-input{
+
+    text-align:center;
+
+    font-size:2rem !important;
+
+    font-weight:900;
+
+    height:70px;
+
+    border-radius:15px;
+}
+
+.vs-icon{
+
+    font-size:2rem;
+
+    color:#FFD700;
+
+    font-weight:bold;
+}
+
+.pronosticos-guardar{
+
+    min-width:220px;
+
+    font-size:1.1rem;
+
+    font-weight:700;
+
+    border-radius:15px;
+
+    padding:12px 25px;
+}

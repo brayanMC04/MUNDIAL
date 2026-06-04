@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { obtenerPartidos } from "../services/partidoService";
+import "../styles/partidos.css";
 
 function Partidos() {
     const [partidos, setPartidos] = useState([]);
@@ -26,7 +27,17 @@ function Partidos() {
             <Navbar />
 
             <div className="container mt-4">
-                <h2>Partidos</h2>
+                <div className="partidos-header">
+
+                    <h1 className="partidos-title">
+                        ⚽ Mundial 2026
+                    </h1>
+
+                    <p className="partidos-subtitle">
+                        Calendario oficial de partidos
+                    </p>
+
+                </div>
 
                 {cargando ? (
                     <p>Cargando partidos...</p>
@@ -38,18 +49,30 @@ function Partidos() {
                             <div className="col-md-6" key={partido.id}>
                                 <div className="card mb-3">
                                     <div className="card-body">
-                                        <h5 className="card-title">
-                                            {partido.equipo_local} vs {partido.equipo_visitante}
-                                        </h5>
+                                        <div className="partido-equipos">
+
+                                            <div className="equipo">
+                                                {partido.equipo_local}
+                                            </div>
+
+                                            <div className="vs">
+                                                VS
+                                            </div>
+
+                                            <div className="equipo">
+                                                {partido.equipo_visitante}
+                                            </div>
+
+                                        </div>
                                         <p className="card-text mb-1">
                                             <strong>Fase:</strong> {partido.fase}
                                         </p>
                                         <p className="card-text mb-1">
                                             <strong>Fecha:</strong> {new Date(partido.fecha_partido).toLocaleString()}
                                         </p>
-                                        <p className="card-text">
-                                            <strong>Estado:</strong> {partido.estado}
-                                        </p>
+                                        <div className={`estado-badge estado-${partido.estado}`}>
+                                            {partido.estado}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,4 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import "../styles/navbar.css";
 
 function Navbar() {
 
@@ -16,12 +17,12 @@ function Navbar() {
     const esAdmin = usuario?.rol === "admin";
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg mundial-navbar">
 
             <div className="container-fluid">
 
-                <span className="navbar-brand">
-                    Polla Mundialista 2026
+                <span className="navbar-brand mundial-logo">
+                    🏆 POLLA MUNDIALISTA 2026
                 </span>
 
                 <button
@@ -42,28 +43,28 @@ function Navbar() {
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                             to="/dashboard"
                         >
-                            Dashboard
+                            🏠 Inicio
                         </NavLink>
 
                         <NavLink
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                             to="/partidos"
                         >
-                            Partidos
+                            ⚽ Partidos
                         </NavLink>
 
                         <NavLink
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                             to="/ranking"
                         >
-                            Ranking
+                            🥇 Ranking
                         </NavLink>
 
                         <NavLink
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                             to="/perfil"
                         >
-                            Perfil
+                            👤 Perfil
                         </NavLink>
 
                         {esAdmin && (
@@ -72,21 +73,21 @@ function Navbar() {
                                     className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                                     to="/admin/equipos"
                                 >
-                                    Equipos
+                                    🌎 Equipos
                                 </NavLink>
 
                                 <NavLink
                                     className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                                     to="/admin/partidos"
                                 >
-                                    Partidos Admin
+                                    🛠️ Partidos Admin
                                 </NavLink>
 
                                 <NavLink
                                     className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                                     to="/admin/usuarios"
                                 >
-                                    Usuarios
+                                    👥 Usuarios
                                 </NavLink>
                             </>
                         )}
@@ -95,7 +96,7 @@ function Navbar() {
                             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
                             to="/pronosticos"
                         >
-                            Pronósticos
+                            🎯 Pronósticos
                         </NavLink>
 
                         {/* Mobile CTA: visible inside collapse on small screens */}
@@ -103,7 +104,7 @@ function Navbar() {
                             className={({ isActive }) => isActive ? "nav-link d-lg-none" : "nav-link d-lg-none"}
                             to="/campeon"
                         >
-                            <span className="btn btn-warning btn-sm w-100 text-dark">Escoger mi campeón</span>
+                            <span className="btn btn-warning btn-sm w-100 text-dark">🏆 Mi Campeón</span>
                         </NavLink>
                     </div>
 

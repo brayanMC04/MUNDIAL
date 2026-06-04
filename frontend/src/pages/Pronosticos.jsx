@@ -2,8 +2,34 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { obtenerPartidos } from "../services/partidoService";
 import { guardarPronostico } from "../services/pronosticoService";
+import "../styles/pronosticos.css";
 
 function Pronosticos() {
+
+    const calcularTiempoRestante = (fechaCierre) => {
+
+        const diferencia =
+            new Date(fechaCierre) - new Date();
+
+        if (diferencia <= 0)
+            return "Cerrado";
+
+        const dias =
+            Math.floor(
+                diferencia /
+                (1000 * 60 * 60 * 24)
+            );
+
+        const horas =
+            Math.floor(
+                (diferencia %
+                    (1000 * 60 * 60 * 24))
+                /
+                (1000 * 60 * 60)
+            );
+
+        return `${dias}d ${horas}h`;
+    };
 
     const [partidos, setPartidos] = useState([]);
     const [mensaje, setMensaje] = useState("");
@@ -99,7 +125,15 @@ function Pronosticos() {
 
             <div className="container mt-4">
 
-                <h2>Mis Pronósticos</h2>
+                <div className="pronosticos-header">
+
+                    <h1 className="pronosticos-title">🎯 Mis Pronósticos</h1>
+
+                    <p className="pronosticos-subtitle">
+                        Predice los resultados y sube en el ranking mundialista
+                    </p>
+
+                </div>
 
                 {mensaje && (
                     <div className="alert alert-success" role="alert">
@@ -126,22 +160,46 @@ function Pronosticos() {
                         return (
                             <div
                                 key={partido.id}
-                                className="card mb-3"
+                                className="card mb-4 partido-card"
                             >
 
                                 <div className="card-body">
 
-                                    <h5>
-                                        {partido.equipo_local}
-                                        {" vs "}
-                                        {partido.equipo_visitante}
-                                    </h5>
+                                    <div className="partido-header">
 
-                                    <p>
-                                        {new Date(
-                                            partido.fecha_partido
-                                        ).toLocaleString()}
-                                    </p>
+                                        <h3>
+                                            {partido.equipo_local}
+                                            <span className="vs-text">
+                                                VS
+                                            </span>
+                                            {partido.equipo_visitante}
+                                        </h3>
+
+                                    </div>
+
+                                    <div className="partido-info">
+
+                                        📅 {
+                                            new Date(
+                                                partido.fecha_partido
+                                            ).toLocaleString()
+                                        }
+
+                                    </div>
+
+                                    <div className="partido-tiempo">
+
+                                        ⏳ Cierra en:
+
+                                        <span>
+                                            {
+                                                calcularTiempoRestante(
+                                                    partido.fecha_cierre
+                                                )
+                                            }
+                                        </span>
+
+                                    </div>
 
                                     <p>
                                         <strong>Estado:</strong>{" "}
@@ -157,13 +215,17 @@ function Pronosticos() {
                                         </p>
                                     )}
 
-                                    <div className="row">
+                                    <div className="row align-items-center text-center">
 
-                                        <div className="col-3">
+                                        <div className="col-md-5">
+
+                                            <h5 className="equipo-nombre">
+                                                {partido.equipo_local}
+                                            </h5>
 
                                             <input
                                                 type="number"
-                                                className="form-control"
+                                                className="form-control marcador-input"
                                                 min="0"
                                                 value={partido.pred_local || ""}
                                                 disabled={partidoCerrado}
@@ -178,11 +240,23 @@ function Pronosticos() {
 
                                         </div>
 
-                                        <div className="col-3">
+                                        <div className="col-md-2">
+
+                                            <div className="vs-icon">
+                                                ⚔️
+                                            </div>
+
+                                        </div>
+
+                                        <div className="col-md-5">
+
+                                            <h5 className="equipo-nombre">
+                                                {partido.equipo_visitante}
+                                            </h5>
 
                                             <input
                                                 type="number"
-                                                className="form-control"
+                                                className="form-control marcador-input"
                                                 min="0"
                                                 value={partido.pred_visitante || ""}
                                                 disabled={partidoCerrado}
@@ -197,22 +271,20 @@ function Pronosticos() {
 
                                         </div>
 
-                                        <div className="col-3">
+                                    </div>
 
-                                            <button
-                                                className="btn btn-success"
-                                                disabled={partidoCerrado}
-                                                onClick={() =>
-                                                    guardar(partido)
-                                                }
-                                            >
-                                                Guardar
-                                            </button>
+                                    <div className="text-center mt-4">
 
-                                        </div>
+                                        <button
+                                            className="btn btn-primary btn-lg pronosticos-guardar"
+                                            disabled={partidoCerrado}
+                                            onClick={() => guardar(partido)}
+                                        >
+                                            🎯 Guardar Pronóstico
+                                        </button>
 
                                         {partidoCerrado && (
-                                            <div className="col-3 mt-2">
+                                            <div className="mt-3">
                                                 <span className="badge bg-secondary">
                                                     Pronóstico cerrado
                                                 </span>

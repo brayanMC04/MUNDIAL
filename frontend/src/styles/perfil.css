@@ -1,0 +1,131 @@
+.perfil-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+    padding:25px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    border-radius:20px;
+}
+
+.perfil-avatar{
+
+    width:120px;
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:4rem;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFD700,
+            #FFB300
+        );
+
+    box-shadow:
+        0 0 25px rgba(
+            255,
+            215,
+            0,
+            .4
+        );
+}
+
+.perfil-nombre{
+
+    margin:0;
+
+    color:white;
+
+    font-weight:900;
+}
+
+.perfil-subtitulo{
+
+    color:#b8c3d9;
+
+    margin-bottom:10px;
+}
+
+.perfil-badges{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.stat-card{
+
+    text-align:center;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    transition:.3s;
+}
+
+.stat-card:hover{
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 0 20px rgba(
+            255,
+            215,
+            0,
+            .2
+        );
+}
+
+.stat-card h3{
+
+    color:#FFD700;
+
+    font-size:2rem;
+
+    margin-bottom:5px;
+}
+
+.stat-card p{
+
+    margin:0;
+
+    color:#b8c3d9;
+}
+
+.historial-title{
+
+    margin-bottom:20px;
+
+    color:#FFD700;
+}

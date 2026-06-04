@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
 function Login() {
 
@@ -41,50 +42,66 @@ function Login() {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="login-page">
 
-            <div className="row justify-content-center">
+            <div className="login-overlay">
 
-                <div className="col-md-4">
+                <div className="login-card">
 
-                    <div className="card">
+                    <div className="login-header">
 
-                        <div className="card-body">
-
-                            <h3 className="text-center mb-4">
-                                Polla Mundial 2026
-                            </h3>
-
-                            <form onSubmit={handleSubmit}>
-
-                                <input
-                                    className="form-control mb-3"
-                                    placeholder="Cédula"
-                                    value={cedula}
-                                    onChange={(e) =>
-                                        setCedula(e.target.value)
-                                    }
-                                />
-
-                                <input
-                                    type="password"
-                                    className="form-control mb-3"
-                                    placeholder="Contraseña"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                />
-
-                                <button
-                                    className="btn btn-primary w-100"
-                                >
-                                    Ingresar
-                                </button>
-
-                            </form>
-
+                        <div className="worldcup-icon">
+                            🏆
                         </div>
+
+                        <h1>
+                            POLLA MUNDIALISTA
+                        </h1>
+
+                        <h2>
+                            FIFA WORLD CUP 2026
+                        </h2>
+
+                        <p>
+                            United States • Canada • Mexico
+                        </p>
+
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+
+                        <input
+                            className="form-control login-input"
+                            placeholder="Ingrese su cédula"
+                            value={cedula}
+                            onChange={(e) =>
+                                setCedula(e.target.value)
+                            }
+                        />
+
+                        <input
+                            type="password"
+                            className="form-control login-input"
+                            placeholder="Ingrese su contraseña"
+                            value={password}
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            }
+                        />
+
+                        <button
+                            className="btn btn-primary login-btn"
+                        >
+                            ⚽ INGRESAR
+                        </button>
+
+                    </form>
+
+                    <div className="login-footer">
+
+                        <span>🇺🇸</span>
+                        <span>🇨🇦</span>
+                        <span>🇲🇽</span>
 
                     </div>
 
@@ -94,6 +111,6 @@ function Login() {
 
         </div>
     );
-}
+    }
 
 export default Login;

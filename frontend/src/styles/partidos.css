@@ -1,0 +1,106 @@
+.partidos-header{
+
+    text-align:center;
+
+    margin-bottom:40px;
+}
+
+.partidos-title{
+
+    font-size:3rem;
+
+    color:#FFD700;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    text-shadow:
+        0 0 20px rgba(
+            255,
+            215,
+            0,
+            .3
+        );
+}
+
+.partidos-subtitle{
+
+    color:#c8d7ef;
+}
+
+.partido-equipos{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    text-align:center;
+
+    margin-bottom:20px;
+}
+
+.equipo{
+
+    flex:1;
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:white;
+}
+
+.vs{
+
+    color:#FFD700;
+
+    font-size:1.3rem;
+
+    font-weight:900;
+
+    margin:0 15px;
+}
+
+.estado-badge{
+
+    display:inline-block;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+}
+
+.estado-pendiente{
+
+    background:#00AEEF;
+
+    color:white;
+}
+
+.estado-finalizado{
+
+    background:#E63946;
+
+    color:white;
+}
+
+.estado-en_juego{
+
+    background:#00C853;
+
+    color:white;
+}
+
+.card-body{
+
+    position:relative;
+}

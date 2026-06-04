@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { obtenerEquipos } from "../services/equipoService";
 import { obtenerPartidos } from "../services/partidoService";
 import { guardarCampeon, obtenerCampeonUsuario } from "../services/campeonService";
+import "../styles/campeon.css";
 
 function Campeon() {
 
@@ -23,12 +24,12 @@ function Campeon() {
     }, []);
 
     const cargarEquipos = async () => {
-
         try {
             const data = await obtenerEquipos();
             setEquipos(data);
         } catch (error) {
-            console.error(error);
+            console.error("Error cargando equipos:", error);
+            setError("No se pudieron cargar los equipos.");
         }
     };
 
@@ -119,20 +120,45 @@ function Campeon() {
                             <label htmlFor="equipo-campeon" className="form-label">
                                 Equipo campeón
                             </label>
-                            <select
-                                id="equipo-campeon"
-                                className="form-select"
-                                value={equipoSeleccionado}
-                                onChange={(e) => setEquipoSeleccionado(e.target.value)}
-                                disabled={torneoIniciado}
-                            >
-                                <option value="">Seleccione un equipo</option>
+                            <div className="equipos-grid">
+                                
                                 {equipos.map((equipo) => (
-                                    <option key={equipo.id} value={equipo.id}>
-                                        {equipo.nombre}
-                                    </option>
+
+                                    <div
+                                        key={equipo.id}
+                                        className={`equipo-card ${
+                                            Number(equipoSeleccionado) === Number(equipo.id)
+                                                ? "selected"
+                                                : ""
+                                        }`}
+                                        onClick={() =>
+                                            !torneoIniciado &&
+                                            setEquipoSeleccionado(equipo.id)
+                                        }
+                                    >
+
+                                        <div className="equipo-bandera">
+                                            🏆
+                                        </div>
+
+                                        <h5>
+                                            {equipo.nombre}
+                                        </h5>
+
+                                        {
+                                            Number(equipoSeleccionado) === Number(equipo.id) &&
+                                            (
+                                                <span className="seleccionado">
+                                                    ✓ Seleccionado
+                                                </span>
+                                            )
+                                        }
+
+                                    </div>
+
                                 ))}
-                            </select>
+
+                            </div>
                         </div>
 
                         <button

@@ -1,0 +1,167 @@
+.login-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0,174,239,.3),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(0,200,83,.25),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #07111f,
+            #0b1830,
+            #102447
+        );
+}
+
+.login-overlay{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+}
+
+.login-card{
+
+    width:100%;
+    max-width:500px;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:
+        rgba(
+            18,
+            35,
+            61,
+            .85
+        );
+
+    backdrop-filter:blur(15px);
+
+    border:
+        1px solid rgba(
+            255,
+            215,
+            0,
+            .25
+        );
+
+    box-shadow:
+        0 0 50px rgba(
+            255,
+            215,
+            0,
+            .15
+        );
+}
+
+.login-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.worldcup-icon{
+
+    font-size:5rem;
+
+    margin-bottom:10px;
+
+    animation:
+        floatCup 3s ease-in-out infinite;
+}
+
+@keyframes floatCup{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+}
+
+.login-header h1{
+
+    font-size:2rem;
+
+    color:#FFD700;
+
+    margin-bottom:5px;
+}
+
+.login-header h2{
+
+    font-size:1.1rem;
+
+    color:white;
+}
+
+.login-header p{
+
+    color:#b8c3d9;
+}
+
+.login-input{
+
+    margin-bottom:15px;
+
+    height:55px;
+
+    border-radius:15px !important;
+
+    border:none !important;
+}
+
+.login-btn{
+
+    width:100%;
+
+    height:55px;
+
+    font-size:1.1rem;
+
+    border-radius:15px !important;
+
+    margin-top:10px;
+
+    font-weight:800;
+}
+
+.login-footer{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:25px;
+
+    font-size:2rem;
+}

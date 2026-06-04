@@ -1,0 +1,94 @@
+.equipos-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(
+                180px,
+                1fr
+            )
+        );
+
+    gap:20px;
+
+    margin-bottom:30px;
+}
+
+.equipo-card{
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            .05
+        );
+
+    border:
+        2px solid transparent;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.equipo-card:hover{
+
+    transform:
+        translateY(-5px);
+
+    border-color:
+        var(--worldcup-blue);
+
+    box-shadow:
+        0 0 20px rgba(
+            0,
+            174,
+            239,
+            .3
+        );
+}
+
+.equipo-bandera{
+
+    font-size:3rem;
+
+    margin-bottom:10px;
+}
+
+.equipo-card.selected{
+
+    border-color:
+        var(--worldcup-gold);
+
+    box-shadow:
+        0 0 25px rgba(
+            255,
+            215,
+            0,
+            .5
+        );
+
+    transform:
+        scale(1.03);
+}
+
+.seleccionado{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:
+        var(--worldcup-gold);
+
+    font-weight:700;
+}

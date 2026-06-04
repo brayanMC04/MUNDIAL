@@ -5,6 +5,11 @@ export const obtenerEquipos = async () => {
     return response.data;
 };
 
+export const obtenerEquiposExternos = async () => {
+    const response = await apiClient.get("/equipos/externos");
+    return response.data;
+};
+
 export const crearEquipo = async (data) => {
     const response = await apiClient.post("/equipos", data);
     return response.data;

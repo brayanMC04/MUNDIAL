@@ -14,3 +14,8 @@ export const actualizarResultadoPartido = async (partidoId, resultado) => {
     const response = await apiClient.put(`/partidos/${partidoId}`, resultado);
     return response.data;
 };
+
+export const eliminarPartidoBackend = async (partidoId) => {
+    const response = await apiClient.delete(`/partidos/${partidoId}`);
+    return response.data;
+};

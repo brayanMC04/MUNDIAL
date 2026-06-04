@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { obtenerRanking } from "../services/rankingService";
 import { obtenerPartidos } from "../services/partidoService";
 import { obtenerCampeonUsuario } from "../services/campeonService";
+import "../styles/dashboard.css";
 
 function Dashboard() {
 
@@ -57,10 +58,30 @@ function Dashboard() {
             <div className="container mt-4">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h1>Dashboard</h1>
-                        <p className="text-muted">
-                            Bienvenido{usuario.nombre ? `, ${usuario.nombre}` : ""}.
-                        </p>
+                        <div className="hero-worldcup mb-4">
+
+                <div>
+
+                    <h1 className="worldcup-title">
+                        🏆 FIFA WORLD CUP 2026
+                    </h1>
+
+                    <p className="worldcup-subtitle">
+
+                        Canadá 🇨🇦 • México 🇲🇽 • Estados Unidos 🇺🇸
+
+                    </p>
+
+                    <h4 className="mt-3">
+
+                        Bienvenido {usuario.nombre}
+
+                    </h4>
+
+                </div>
+
+            </div>
+                        
                     </div>
                     <Link className="btn btn-primary" to="/ranking">
                         Ver ranking completo
@@ -75,9 +96,9 @@ function Dashboard() {
 
                 <div className="row g-3 mb-4">
                     <div className="col-md-3">
-                        <div className="card shadow-sm">
+                        <div className="card shadow-sm dashboard-card">
                             <div className="card-body">
-                                <h6 className="text-uppercase text-muted">Mi posición</h6>
+                                <h6 className="stat-title">🥇 Mi posición</h6>
                                 <h2>{posicion > 0 ? posicion : "—"}</h2>
                                 <p className="mb-0 text-muted">en el ranking general</p>
                             </div>
@@ -85,9 +106,9 @@ function Dashboard() {
                     </div>
 
                     <div className="col-md-3">
-                        <div className="card shadow-sm">
+                        <div className="card shadow-sm dashboard-card">
                             <div className="card-body">
-                                <h6 className="text-uppercase text-muted">Mis puntos</h6>
+                                <h6 className="stat-title">⭐ Mis puntos</h6>
                                 <h2>{usuarioRanking.puntos ?? 0}</h2>
                                 <p className="mb-0 text-muted">pronósticos + campeón</p>
                             </div>
@@ -95,9 +116,9 @@ function Dashboard() {
                     </div>
 
                     <div className="col-md-3">
-                        <div className="card shadow-sm">
+                        <div className="card shadow-sm dashboard-card">
                             <div className="card-body">
-                                <h6 className="text-uppercase text-muted">Partidos abiertos</h6>
+                                <h6 className="stat-title">⚽ Partidos abiertos</h6>
                                 <h2>{partidosAbiertos.length}</h2>
                                 <p className="mb-0 text-muted">puedes editar pronósticos</p>
                             </div>
@@ -105,9 +126,9 @@ function Dashboard() {
                     </div>
 
                     <div className="col-md-3">
-                        <div className="card shadow-sm">
+                        <div className="card shadow-sm dashboard-card">
                             <div className="card-body">
-                                <h6 className="text-uppercase text-muted">Rol</h6>
+                                <h6 className="stat-title">👤 Rol</h6>
                                 <h2>{usuario.rol || "Usuario"}</h2>
                                 <p className="mb-0 text-muted">acceso actual</p>
                             </div>
@@ -117,7 +138,7 @@ function Dashboard() {
 
                 <div className="row mb-4">
                     <div className="col">
-                        <div className="card shadow-sm">
+                        <div className="card shadow-sm dashboard-card">
                             <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                                 <div>
                                     <h6 className="text-uppercase text-muted">Mi campeón</h6>
@@ -181,25 +202,38 @@ function Dashboard() {
                                 ) : ranking.length === 0 ? (
                                     <p>No hay datos de ranking disponibles.</p>
                                 ) : (
-                                    <div className="table-responsive">
-                                        <table className="table table-sm mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Usuario</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {ranking.slice(0, 5).map((item, index) => (
-                                                    <tr key={item.id} className={item.id === usuario.id ? "table-primary" : ""}>
-                                                        <td>{index + 1}</td>
-                                                        <td>{item.nombre}</td>
-                                                        <td>{item.puntos}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                    <div className="ranking-top5">
+
+                                        {ranking.slice(0, 5).map((item, index) => (
+
+                                            <div
+                                                key={item.id}
+                                                className={`top-card top-${index + 1}`}
+                                            >
+
+                                                <div className="top-posicion">
+
+                                                    {index === 0 && "🥇"}
+                                                    {index === 1 && "🥈"}
+                                                    {index === 2 && "🥉"}
+                                                    {index > 2 && "🏅"}
+
+                                                </div>
+
+                                                <div className="top-info">
+
+                                                    <h5>{item.nombre}</h5>
+
+                                                    <span>
+                                                        {item.puntos} pts
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        ))}
+
                                     </div>
                                 )}
                             </div>

@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { obtenerRanking } from "../services/rankingService";
+import "../styles/ranking.css";
 
 function Ranking() {
 
     const [ranking, setRanking] = useState([]);
+
+    const usuario =
+    JSON.parse(
+        localStorage.getItem("usuario")
+    ) || {};
 
     useEffect(() => {
         cargarRanking();
@@ -24,59 +30,170 @@ function Ranking() {
         }
     };
 
+    const top3 = ranking.slice(0, 3);
+
+    const miPosicion =
+        ranking.findIndex(
+            item => item.id === usuario.id
+        ) + 1;
+
+    const misDatos =
+        ranking.find(
+            item => item.id === usuario.id
+        );
+
     return (
         <>
             <Navbar />
 
             <div className="container mt-4">
 
-                <h2>Ranking General</h2>
+                <div className="ranking-header">
 
-                <table className="table table-striped">
+                    <h1 className="ranking-title">
+                        🏆 Ranking Mundialista
+                    </h1>
 
-                    <thead>
+                    <p className="ranking-subtitle">
+                        Los mejores pronosticadores del torneo
+                    </p>
 
-                        <tr>
-                            <th>#</th>
-                            <th>Usuario</th>
-                            <th>Puntos pronósticos</th>
-                            <th>Puntos campeón</th>
-                            <th>Total</th>
-                        </tr>
+                </div>
 
-                    </thead>
+                <div className="card mb-4">
 
-                    <tbody>
+                    <div className="card-body text-center">
 
-                        {ranking.map((usuario, index) => (
+                        <h5>Mi Posición</h5>
 
-                            <tr key={index}>
+                        <h1>
+                            {miPosicion || "-"}
+                        </h1>
 
-                                <td>{index + 1}</td>
+                        <p>
+                            {misDatos?.puntos || 0} puntos
+                        </p>
 
-                                <td>
-                                    {usuario.nombre}
-                                </td>
+                    </div>
 
-                                <td>
-                                    {usuario.puntos_pronosticos}
-                                </td>
+                </div>
 
-                                <td>
-                                    {usuario.puntos_campeon}
-                                </td>
+                {
+                    top3.length >= 3 && (
 
-                                <td>
-                                    {usuario.puntos}
-                                </td>
+                        <div className="podio">
+
+                            <div className="podio-card plata">
+
+                                <div className="medalla">
+                                    🥈
+                                </div>
+
+                                <h4>
+                                    {top3[1].nombre}
+                                </h4>
+
+                                <h2>
+                                    {top3[1].puntos}
+                                </h2>
+
+                            </div>
+
+                            <div className="podio-card oro">
+
+                                <div className="medalla">
+                                    🥇
+                                </div>
+
+                                <h4>
+                                    {top3[0].nombre}
+                                </h4>
+
+                                <h2>
+                                    {top3[0].puntos}
+                                </h2>
+
+                            </div>
+
+                            <div className="podio-card bronce">
+
+                                <div className="medalla">
+                                    🥉
+                                </div>
+
+                                <h4>
+                                    {top3[2].nombre}
+                                </h4>
+
+                                <h2>
+                                    {top3[2].puntos}
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    )
+                }
+
+                <div className="ranking-table">
+
+                    <table className="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+
+                                <th>Usuario</th>
+
+                                <th>Pronósticos</th>
+
+                                <th>Campeón</th>
+
+                                <th>Total</th>
 
                             </tr>
 
-                        ))}
+                        </thead>
 
-                    </tbody>
+                        <tbody>
 
-                </table>
+                            {ranking.map((item, index) => (
+
+                                <tr
+                                    key={index}
+                                    className={
+                                        item.id === usuario.id
+                                            ? "usuario-actual"
+                                            : ""
+                                    }
+                                >
+
+                                    <td>{index + 1}</td>
+
+                                    <td>{item.nombre}</td>
+
+                                    <td>{item.puntos_pronosticos}</td>
+
+                                    <td>{item.puntos_campeon}</td>
+
+                                    <td>
+                                        <strong>
+                                            {item.puntos}
+                                        </strong>
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
         </>
