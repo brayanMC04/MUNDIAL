@@ -1,8 +1,11 @@
-import axios from "axios";
-
-const API = "http://127.0.0.1:5000/api/pronosticos";
+import apiClient from "./httpClient";
 
 export const guardarPronostico = async (data) => {
-    const response = await axios.post(API, data);
+    const response = await apiClient.post("/pronosticos", data);
+    return response.data;
+};
+
+export const obtenerPronosticosUsuario = async (usuarioId) => {
+    const response = await apiClient.get(`/pronosticos/usuario/${usuarioId}`);
     return response.data;
 };

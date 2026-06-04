@@ -6,6 +6,8 @@ import { guardarPronostico } from "../services/pronosticoService";
 function Pronosticos() {
 
     const [partidos, setPartidos] = useState([]);
+    const [mensaje, setMensaje] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         cargarPartidos();
@@ -16,8 +18,15 @@ function Pronosticos() {
         try {
 
             const data = await obtenerPartidos();
+            const abiertos = data.filter((partido) => {
+                const cerrado =
+                    partido.estado !== "pendiente" ||
+                    new Date(partido.fecha_cierre) <= new Date();
 
-            setPartidos(data);
+                return !cerrado;
+            });
+
+            setPartidos(abiertos);
 
         } catch (error) {
 
@@ -28,25 +37,37 @@ function Pronosticos() {
     const guardar = async (partido) => {
 
         try {
+            const partidoCerrado =
+                partido.estado !== "pendiente" ||
+                new Date(partido.fecha_cierre) <= new Date();
+
+            if (partidoCerrado) {
+                setError("El partido ya cerró. No se puede guardar el pronóstico.");
+                setMensaje("");
+                return;
+            }
 
             const usuario = JSON.parse(
                 localStorage.getItem("usuario")
             );
 
-            await guardarPronostico({
+            const response = await guardarPronostico({
                 usuario_id: usuario.id,
                 partido_id: partido.id,
                 pred_local: partido.pred_local || 0,
                 pred_visitante: partido.pred_visitante || 0
             });
 
-            alert("Pronóstico guardado");
+            setMensaje(response.message || "Pronóstico guardado");
+            setError("");
 
         } catch (error) {
-
             console.error(error);
-
-            alert("Error guardando pronóstico");
+            setError(
+                error.response?.data?.message ||
+                "Error guardando pronóstico"
+            );
+            setMensaje("");
         }
     };
 
@@ -80,85 +101,132 @@ function Pronosticos() {
 
                 <h2>Mis Pronósticos</h2>
 
-                {
-                    partidos.map((partido) => (
+                {mensaje && (
+                    <div className="alert alert-success" role="alert">
+                        {mensaje}
+                    </div>
+                )}
 
-                        <div
-                            key={partido.id}
-                            className="card mb-3"
-                        >
+                {error && (
+                    <div className="alert alert-danger" role="alert">
+                        {error}
+                    </div>
+                )}
 
-                            <div className="card-body">
+                {partidos.length === 0 ? (
+                    <div className="alert alert-info" role="alert">
+                        No hay partidos abiertos para pronosticar.
+                    </div>
+                ) : (
+                    partidos.map((partido) => {
+                        const partidoCerrado =
+                            partido.estado !== "pendiente" ||
+                            new Date(partido.fecha_cierre) <= new Date();
 
-                                <h5>
-                                    {partido.equipo_local}
-                                    {" vs "}
-                                    {partido.equipo_visitante}
-                                </h5>
+                        return (
+                            <div
+                                key={partido.id}
+                                className="card mb-3"
+                            >
 
-                                <p>
-                                    {new Date(
-                                        partido.fecha_partido
-                                    ).toLocaleString()}
-                                </p>
+                                <div className="card-body">
 
-                                <div className="row">
+                                    <h5>
+                                        {partido.equipo_local}
+                                        {" vs "}
+                                        {partido.equipo_visitante}
+                                    </h5>
 
-                                    <div className="col-3">
+                                    <p>
+                                        {new Date(
+                                            partido.fecha_partido
+                                        ).toLocaleString()}
+                                    </p>
 
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            min="0"
-                                            onChange={(e) =>
-                                                actualizarMarcador(
-                                                    partido.id,
-                                                    "pred_local",
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
+                                    <p>
+                                        <strong>Estado:</strong>{" "}
+                                        {partido.estado}
+                                    </p>
 
-                                    </div>
+                                    {partido.estado === "finalizado" && (
+                                        <p>
+                                            <strong>Resultado oficial:</strong>{" "}
+                                            {partido.goles_local}
+                                            {" - "}
+                                            {partido.goles_visitante}
+                                        </p>
+                                    )}
 
-                                    <div className="col-3">
+                                    <div className="row">
 
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            min="0"
-                                            onChange={(e) =>
-                                                actualizarMarcador(
-                                                    partido.id,
-                                                    "pred_visitante",
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
+                                        <div className="col-3">
 
-                                    </div>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                min="0"
+                                                value={partido.pred_local || ""}
+                                                disabled={partidoCerrado}
+                                                onChange={(e) =>
+                                                    actualizarMarcador(
+                                                        partido.id,
+                                                        "pred_local",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
 
-                                    <div className="col-3">
+                                        </div>
 
-                                        <button
-                                            className="btn btn-success"
-                                            onClick={() =>
-                                                guardar(partido)
-                                            }
-                                        >
-                                            Guardar
-                                        </button>
+                                        <div className="col-3">
+
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                min="0"
+                                                value={partido.pred_visitante || ""}
+                                                disabled={partidoCerrado}
+                                                onChange={(e) =>
+                                                    actualizarMarcador(
+                                                        partido.id,
+                                                        "pred_visitante",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="col-3">
+
+                                            <button
+                                                className="btn btn-success"
+                                                disabled={partidoCerrado}
+                                                onClick={() =>
+                                                    guardar(partido)
+                                                }
+                                            >
+                                                Guardar
+                                            </button>
+
+                                        </div>
+
+                                        {partidoCerrado && (
+                                            <div className="col-3 mt-2">
+                                                <span className="badge bg-secondary">
+                                                    Pronóstico cerrado
+                                                </span>
+                                            </div>
+                                        )}
 
                                     </div>
 
                                 </div>
 
                             </div>
-
-                        </div>
-
-                    ))
-                }
+                        );
+                    })
+                )}
 
             </div>
         </>

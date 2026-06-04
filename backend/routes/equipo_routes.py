@@ -12,10 +12,12 @@ equipo_bp = Blueprint(
 
 equipo_bp.route(
     "/",
-    methods=["GET"]
+    methods=["GET"],
+    strict_slashes=False
 )(listar_equipos)
 
 equipo_bp.route(
     "/",
-    methods=["POST"]
+    methods=["POST"],
+    strict_slashes=False
 )(crear_equipo)

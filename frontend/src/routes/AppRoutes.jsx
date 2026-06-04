@@ -13,6 +13,7 @@ import Ranking from "../pages/Ranking";
 import Perfil from "../pages/Perfil";
 import AdminEquipos from "../pages/AdminEquipos";
 import AdminPartidos from "../pages/AdminPartidos";
+import AdminUsuarios from "../pages/AdminUsuarios";
 import Pronosticos from "../pages/Pronosticos";
 
 function AppRoutes() {
@@ -84,7 +85,7 @@ function AppRoutes() {
                 <Route
                     path="/admin/equipos"
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute adminOnly>
                             <AdminEquipos />
                         </PrivateRoute>
                     }
@@ -93,8 +94,17 @@ function AppRoutes() {
                 <Route
                     path="/admin/partidos"
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute adminOnly>
                             <AdminPartidos />
+                        </PrivateRoute>
+                    }
+                />
+
+                <Route
+                    path="/admin/usuarios"
+                    element={
+                        <PrivateRoute adminOnly>
+                            <AdminUsuarios />
                         </PrivateRoute>
                     }
                 />

@@ -1,8 +1,6 @@
-import axios from "axios";
-
-const API = "http://127.0.0.1:5000/api/campeon";
+import apiClient from "./httpClient";
 
 export const guardarCampeon = async (data) => {
-    const response = await axios.post(API, data);
+    const response = await apiClient.post("/campeon", data);
     return response.data;
 };

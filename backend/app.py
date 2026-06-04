@@ -8,14 +8,19 @@ from config.jwt_config import JWTConfig
 from routes.pronostico_routes import pronostico_bp
 from routes.campeon_routes import campeon_bp
 from routes.ranking_routes import ranking_bp
+from routes.usuario_routes import usuario_bp
 
 app = Flask(__name__)
 
 app.config["JWT_SECRET_KEY"] = JWTConfig.SECRET_KEY
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+app.config["CORS_HEADERS"] = "Content-Type,Authorization"
 
 jwt = JWTManager(app)
 
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.register_blueprint(
     auth_bp,
@@ -40,6 +45,11 @@ app.register_blueprint(
 app.register_blueprint(
     campeon_bp,
     url_prefix="/api/campeon"
+)
+
+app.register_blueprint(
+    usuario_bp,
+    url_prefix="/api/usuarios"
 )
 
 app.register_blueprint(

@@ -1,5 +1,11 @@
 from flask import request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt
 from config.database import get_connection
+
+
+def es_admin():
+    claims = get_jwt()
+    return claims.get("rol") == "admin"
 
 
 def listar_equipos():
@@ -31,7 +37,14 @@ def listar_equipos():
         connection.close()
 
 
+@jwt_required()
 def crear_equipo():
+
+    if not es_admin():
+        return jsonify({
+            "success": False,
+            "message": "Acceso denegado. Se requiere rol admin."
+        }), 403
 
     data = request.get_json()
 

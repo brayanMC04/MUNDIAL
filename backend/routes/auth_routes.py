@@ -11,10 +11,12 @@ auth_bp = Blueprint(
 
 auth_bp.route(
     "/login",
-    methods=["POST"]
+    methods=["POST"],
+    strict_slashes=False
 )(login)
 
 auth_bp.route(
     "/perfil",
-    methods=["GET"]
+    methods=["GET"],
+    strict_slashes=False
 )(perfil)

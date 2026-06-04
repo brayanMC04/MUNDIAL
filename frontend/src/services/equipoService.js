@@ -1,10 +1,11 @@
-import axios from "axios";
-
-const API = "http://127.0.0.1:5000/api/equipos";
+import apiClient from "./httpClient";
 
 export const obtenerEquipos = async () => {
+    const response = await apiClient.get("/equipos");
+    return response.data;
+};
 
-    const response = await axios.get(API);
-
+export const crearEquipo = async (data) => {
+    const response = await apiClient.post("/equipos", data);
     return response.data;
 };

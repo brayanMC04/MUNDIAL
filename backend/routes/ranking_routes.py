@@ -8,5 +8,6 @@ ranking_bp = Blueprint(
 
 ranking_bp.route(
     "/",
-    methods=["GET"]
+    methods=["GET"],
+    strict_slashes=False
 )(obtener_ranking)

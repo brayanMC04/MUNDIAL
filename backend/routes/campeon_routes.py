@@ -10,6 +10,7 @@ campeon_bp = Blueprint(
 )
 
 campeon_bp.route(
-    "",
-    methods=["POST"]
+    "/",
+    methods=["POST"],
+    strict_slashes=False
 )(seleccionar_campeon)

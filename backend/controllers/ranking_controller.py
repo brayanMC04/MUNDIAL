@@ -11,12 +11,10 @@ def obtener_ranking():
         with connection.cursor() as cursor:
 
             cursor.execute("""
-                SELECT
-                    u.nombre,
-                    COALESCE(SUM(p.puntos), 0)
-                    +
-                    COALESCE(MAX(c.puntos), 0)
-                    AS puntos
+                SELECT                    u.id,                    u.nombre,
+                    COALESCE(SUM(p.puntos), 0) AS puntos_pronosticos,
+                    COALESCE(MAX(c.puntos), 0) AS puntos_campeon,
+                    COALESCE(SUM(p.puntos), 0) + COALESCE(MAX(c.puntos), 0) AS puntos
                 FROM usuarios u
 
                 LEFT JOIN pronosticos p

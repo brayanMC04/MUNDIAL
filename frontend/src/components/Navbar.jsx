@@ -7,9 +7,13 @@ function Navbar() {
     const cerrarSesion = () => {
 
         localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
 
         navigate("/");
     };
+
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const esAdmin = usuario?.rol === "admin";
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -57,19 +61,30 @@ function Navbar() {
                         Perfil
                     </Link>
 
-                    <Link
-                        className="nav-link"
-                        to="/admin/equipos"
-                    >
-                        Equipos
-                    </Link>
+                    {esAdmin && (
+                        <>
+                            <Link
+                                className="nav-link"
+                                to="/admin/equipos"
+                            >
+                                Equipos
+                            </Link>
 
-                    <Link
-                        className="nav-link"
-                        to="/admin/partidos"
-                    >
-                        Partidos Admin
-                    </Link>
+                            <Link
+                                className="nav-link"
+                                to="/admin/partidos"
+                            >
+                                Partidos Admin
+                            </Link>
+
+                            <Link
+                                className="nav-link"
+                                to="/admin/usuarios"
+                            >
+                                Usuarios
+                            </Link>
+                        </>
+                    )}
 
                     <Link
                         className="nav-link"

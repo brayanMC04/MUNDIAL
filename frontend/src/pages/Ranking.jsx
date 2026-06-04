@@ -39,7 +39,9 @@ function Ranking() {
                         <tr>
                             <th>#</th>
                             <th>Usuario</th>
-                            <th>Puntos</th>
+                            <th>Puntos pronósticos</th>
+                            <th>Puntos campeón</th>
+                            <th>Total</th>
                         </tr>
 
                     </thead>
@@ -54,6 +56,14 @@ function Ranking() {
 
                                 <td>
                                     {usuario.nombre}
+                                </td>
+
+                                <td>
+                                    {usuario.puntos_pronosticos}
+                                </td>
+
+                                <td>
+                                    {usuario.puntos_campeon}
                                 </td>
 
                                 <td>
