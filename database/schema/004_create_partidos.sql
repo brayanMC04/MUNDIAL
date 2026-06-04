@@ -30,6 +30,10 @@ CREATE TABLE partidos(
 
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    ultima_actualizacion DATETIME NULL;
+
+     grupo VARCHAR(10) NULL;
+
     FOREIGN KEY (equipo_local_id)
         REFERENCES equipos(id),
 
