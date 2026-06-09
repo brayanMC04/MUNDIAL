@@ -99,13 +99,9 @@ def crear_pronostico():
 
 
 def obtener_pronosticos_usuario(usuario_id):
-
     connection = get_connection()
-
     try:
-
         with connection.cursor() as cursor:
-
             cursor.execute("""
                 SELECT
                     pr.id,
@@ -133,12 +129,13 @@ def obtener_pronosticos_usuario(usuario_id):
             pronosticos = cursor.fetchall()
 
             for pronostico in pronosticos:
+                # 🔄 CAMBIO AQUÍ: Usamos format string estándar para evitar que JavaScript asuma UTC
                 if isinstance(pronostico.get("fecha_pronostico"), (date, datetime)):
-                    pronostico["fecha_pronostico"] = pronostico["fecha_pronostico"].isoformat()
+                    pronostico["fecha_pronostico"] = pronostico["fecha_pronostico"].strftime('%Y-%m-%dT%H:%M:%S')
                 if isinstance(pronostico.get("fecha_partido"), (date, datetime)):
-                    pronostico["fecha_partido"] = pronostico["fecha_partido"].isoformat()
+                    pronostico["fecha_partido"] = pronostico["fecha_partido"].strftime('%Y-%m-%dT%H:%M:%S')
                 if isinstance(pronostico.get("fecha_cierre"), (date, datetime)):
-                    pronostico["fecha_cierre"] = pronostico["fecha_cierre"].isoformat()
+                    pronostico["fecha_cierre"] = pronostico["fecha_cierre"].strftime('%Y-%m-%dT%H:%M:%S')
 
         return jsonify({
             "success": True,
@@ -150,6 +147,5 @@ def obtener_pronosticos_usuario(usuario_id):
             "success": False,
             "message": str(e)
         }), 500
-
     finally:
         connection.close()

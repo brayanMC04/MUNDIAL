@@ -1,5 +1,7 @@
 from flask import request, jsonify
 from config.database import get_connection
+from datetime import date, datetime
+
 
 def listar_partidos():
     connection = get_connection()
@@ -18,6 +20,15 @@ def listar_partidos():
                 ORDER BY p.fecha_partido
             """)
             partidos = cursor.fetchall()
+            
+            # 🔄 FORMATEADOR DE FECHAS SEGURO:
+            # Evitamos que Flask mande datos crudos que confundan al navegador
+            for partido in partidos:
+                if isinstance(partido.get("fecha_partido"), (date, datetime)):
+                    partido["fecha_partido"] = partido["fecha_partido"].strftime('%Y-%m-%dT%H:%M:%S')
+                if isinstance(partido.get("fecha_cierre"), (date, datetime)):
+                    partido["fecha_cierre"] = partido["fecha_cierre"].strftime('%Y-%m-%dT%H:%M:%S')
+
             return jsonify(partidos), 200
     except Exception as e:
         return jsonify({

@@ -22,6 +22,50 @@ function Partidos() {
         }
     };
 
+    // 🆕 FUNCIÓN AUXILIAR REPARADA Y ROBUSTA
+    const formatearFecha = (fechaOriginal) => {
+        if (!fechaOriginal) return "Fecha no disponible";
+
+        try {
+            // 1. Nos aseguramos de que sea un string antes de manipularlo
+            let fechaString = String(fechaOriginal);
+
+            // 2. Si viene con la zona horaria 'Z' u otra variante, la limpiamos
+            // Reemplazamos el espacio por una 'T' para congelar la zona horaria local
+            if (fechaString.includes(" ")) {
+                fechaString = fechaString.replace(" ", "T");
+            }
+
+            const fechaFija = new Date(fechaString);
+
+            // 3. Si el navegador todavía no la entiende, hacemos un último intento limpio
+            if (isNaN(fechaFija.getTime())) {
+                // Si la fecha venía como "2026-06-05T09:07:00.000Z", le quitamos la Z del final
+                const fechaLimpia = fechaString.split('.')[0].replace('Z', '');
+                const intentoAlterno = new Date(fechaLimpia);
+                if (!isNaN(intentoAlterno.getTime())) {
+                    return intentoAlterno.toLocaleString('es-CO', { 
+                        year: 'numeric', month: '2-digit', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit', hour12: true 
+                    });
+                }
+                return fechaOriginal; // Si falla todo, muestra el texto tal cual viene de la BD
+            }
+            
+            return fechaFija.toLocaleString('es-CO', { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true 
+            });
+        } catch (error) {
+            console.error("Error al formatear fecha:", error);
+            return String(fechaOriginal);
+        }
+    };
+
     return (
         <>
             <Navbar />
@@ -68,7 +112,8 @@ function Partidos() {
                                             <strong>Fase:</strong> {partido.fase}
                                         </p>
                                         <p className="card-text mb-1">
-                                            <strong>Fecha:</strong> {new Date(partido.fecha_partido).toLocaleString()}
+                                            {/* 🔄 Cambiado para usar nuestra nueva función fija */}
+                                            <strong>Fecha:</strong> {formatearFecha(partido.fecha_partido)}
                                         </p>
                                         <div className={`estado-badge estado-${partido.estado}`}>
                                             {partido.estado}
